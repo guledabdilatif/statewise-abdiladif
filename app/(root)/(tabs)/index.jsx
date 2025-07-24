@@ -1,6 +1,12 @@
-import SignIn from '../../SignIn';
 
-export default function Index() {
-  return <SignIn />  
-  
+import { Text, View } from 'react-native'
+
+const Index = () => {
+  return (
+    <View>
+      <Text>Home</Text>
+    </View>
+  )
 }
+
+export default Index

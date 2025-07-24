@@ -8,7 +8,7 @@ import noResult from "@/assets/images/no-result.png";
 import onboarding from "@/assets/images/onboarding.png";
 import whiteGradient from "@/assets/images/white-gradient.png";
 
-export default {
+export const images = {
   onboarding,
   avatar,
   newYork,
