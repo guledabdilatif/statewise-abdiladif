@@ -16,7 +16,7 @@ const TabsLayout = () => {
                     left: 0,
                     right: 0,
                     elevation: 0,
-                    minHeight:70,
+                    
                     borderTopWidth: 1,
                     borderTopColor: '#0061FF1A',
                     color:"black"

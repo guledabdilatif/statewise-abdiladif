@@ -1,6 +1,6 @@
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
-import { settings } from '../../../constants/data'; // Assuming you have a data file
+import { settings } from '../../../constants/data';
 import { icons } from '../../../constants/icons';
 import { images } from '../../../constants/images';
 const Profile = () => {
@@ -23,7 +23,7 @@ const Profile = () => {
           <Text style={tw`text-xl`}>
             Profile
           </Text>
-          <Image source={icons.bell} style={tw`w-5 h-5 rounded-full cursor-pointer`} />
+          <Image source={icons.bell} style={tw`w-5 h-5 rounded-full`} />
         </View>
         <View style={tw`flex-row justify-center flex mb-5`}>
           <View style={tw`flex flex-col items-center relative mt-5`}>
