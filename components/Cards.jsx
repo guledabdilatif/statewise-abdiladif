@@ -1,10 +1,12 @@
 import { icons } from '@/constants/icons';
 import { images } from '@/constants/images';
+import { useRouter } from 'expo-router';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 export const FeatureCard = (onPress) => {
+    const router = useRouter();
     return (
-        <TouchableOpacity onPress={onPress} style={tw`flex flex-col items-start w-60 h-80 relative`}>
+        <TouchableOpacity onPress={() => router.push('/Details')} style={tw`flex flex-col items-start w-60 h-80 relative`}>
             <Image source={images.japan} style={tw`w-full h-full rounded-lg`} />
             <Image source={images.cardGradient} style={tw`w-full h-full rounded-2xl absolute bottom-0`} />
             <View style={tw`rounded-full absolute top-5 right-5 bg-white px-3 py-1.5 flex flex-row items-center gap-2`}>
