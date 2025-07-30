@@ -19,7 +19,7 @@ const Profile = () => {
       <ScrollView style={tw`p-4`}
         showVerticalScrollIndicator={false}
         contentContainerStyle={tw`pb-32`}>
-        <View style={tw`flex-row justify-between items-center mb-4`}>
+        <View style={tw`flex-row justify-between items-center my-4`}>
           <Text style={tw`text-xl`}>
             Profile
           </Text>

@@ -17,9 +17,9 @@ const Details = () => {
                             <Image source={icons.backArrow} style={tw`w-7 h-7 z-5`} />
                         </TouchableOpacity>
                         <View style={tw`flex flex-row items-center gap-3`}>
-                            <TouchableOpacity>
-                                <Image source={icons.heart} style={tw`w-6 h-6 z-5`} />
-                            </TouchableOpacity>
+                         <TouchableOpacity>
+                                    <Heart color={"black"} />
+                                </TouchableOpacity>
                             <Image source={icons.send} style={tw`w-6 h-6 z-5`} />
                         </View>
                     </View>
@@ -142,12 +142,12 @@ const Details = () => {
                     </View>
                     {/* price  */}
                     <View style={tw`my-4 flex flex-row gap-3 items-center `}>
-                        <View>
+                        <View style={tw``}>
                             <Text>Price</Text>
-                            <Text style={tw`font-extrabold text-xl`}>Kes 20, 000,000</Text>
+                            <Text style={tw`font-extrabold text-xl text-blue-700`}>Kes 20M</Text>
                         </View>
-                        <TouchableOpacity style={tw`px-2 py-4 flex-1 bg-blue-700 rounded-full flex flex-row items-center justify-center`}>
-<Text style={tw`font-extrabold text-white text-lg`}>Booking Now!</Text>
+                        <TouchableOpacity style={[tw`px-2 py-2 flex-1 bg-blue-700 rounded-full flex flex-row items-center justify-center `, {elevation:90, shadowColor:"black"}]}>
+                            <Text style={tw`font-extrabold text-white text-lg`}>Booking Now!</Text>
                         </TouchableOpacity>
                     </View>
 

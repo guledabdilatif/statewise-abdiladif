@@ -6,12 +6,14 @@ const Filters = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     return (
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+
+            
             {categories.map((category, index) => {
                 const isSelected = selectedCategory === category.title;
                 return (
                     <TouchableOpacity key={index} style={tw`mr-5 flex flex-col px-4 py-1 rounded-full items-start
-                    ${isSelected ? 'bg-blue-500 text-white' : 'bg-transparent'}`} onPress={() => setSelectedCategory(category.title)}>
-                        <Text style={[tw`text-base font-bold`, isSelected ? tw`text-white` : tw`text-black`]}>{category.title}</Text> 
+                    ${isSelected ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} onPress={() => setSelectedCategory(category.title)}>
+                        <Text style={[tw`text-base`, isSelected ? tw`text-white` : tw`text-black`]}>{category.title}</Text>
                     </TouchableOpacity>
                 );
             })}

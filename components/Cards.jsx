@@ -27,7 +27,7 @@ export const FeatureCard = (onPress) => {
 
 export const Card = () => {
     return (
-        <TouchableOpacity style={tw`flex flex-col flex-1 relative px-3 py-4 mb-10 shadow w-full rounded-lg bg-white `}>
+        <TouchableOpacity style={tw`flex flex-col flex-1 relative px-3 py-4 mb-1 shadow w-full rounded-lg bg-white `}>
           <View style={tw`flex flex-row items-center absolute top-5 right-5 bg-white rounded-full z-50 p-1`}>
                 <Image source={icons.star} style={tw`size-3.5 `} />
                 <Text style={tw`text-xl font-bold text-blue-500 ml-0.5`}>4.4</Text>

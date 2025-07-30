@@ -15,7 +15,7 @@ const Search = () => {
     }
     return (
 
-        <View style={tw`flex flex-row items-center justify-between w-full border mt-5 rounded-lg px-4 py-2`}>
+        <View style={tw`flex flex-row items-center justify-between w-full bg-gray-200 mt-5 rounded-lg px-4 py-2`}>
 
             <View style={tw`flex-1 flex flex-row items-center justify-start z-50`}>
                 <Image
