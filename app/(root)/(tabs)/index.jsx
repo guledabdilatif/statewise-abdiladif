@@ -13,7 +13,7 @@ const Index = () => {
     <SafeAreaView style={tw`bg-white h-full`} >
 
       <FlatList
-        data={[1, 2, 3, 4, 5]}
+        data={[1, 2, 3, 4]}
         renderItem={({ item }) => <Card />}
         keyExtractor={(item) => item.toString()}
         numColumns={2}
