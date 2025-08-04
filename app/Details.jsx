@@ -5,33 +5,39 @@ import tw from 'twrnc';
 import { facilities } from '../constants/data';
 import { icons } from '../constants/icons';
 import { images } from '../constants/images';
+import { useLocalSearchParams } from 'expo-router';
 const Details = () => {
+
+    const { property } = useLocalSearchParams();
+    const detailsData = JSON.parse(property);
+    console.log(detailsData);
+    
     const router = useRouter();
     return (
         <SafeAreaView style={tw`flex-1`}>
             <ScrollView style={tw``} showsHorizontalScrollIndicator={true}>
                 <View style={tw`relative`}>
-                    <Image source={images.japan} style={tw`w-full h-64`} />
+                    <Image source={images.reviewer_image} style={tw`w-full h-64`} />
                     <View style={tw`absolute top-0 left-0 right-0 flex flex-row items-center justify-between px-5 pt-5 mt-5 z-6`}>
                         <TouchableOpacity onPress={() => router.back()}>
                             <Image source={icons.backArrow} style={tw`w-7 h-7 z-5`} />
                         </TouchableOpacity>
                         <View style={tw`flex flex-row items-center gap-3`}>
-                         <TouchableOpacity>
-                                    <Heart color={"black"} />
-                                </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Heart color={"black"} />
+                            </TouchableOpacity>
                             <Image source={icons.send} style={tw`w-6 h-6 z-5`} />
                         </View>
                     </View>
                     <Image source={images.cardGradient} style={tw`absolute bottom-0 w-full z-1`} />
                 </View>
                 <View style={tw`px-3`}>
-                    <Text style={tw`text-[24px] font-bold mt-4`}>Modernica Apartment</Text>
+                    <Text style={tw`text-[24px] font-bold mt-4`}>{detailsData.name}</Text>
                     <View style={tw`flex flex-row gap-4`}>
-                        <Text style={tw`bg-blue-100 p-2 text-blue rounded-full`}>Apartment</Text>
+                        <Text style={tw`bg-blue-100 p-2 text-blue rounded-full`}>{detailsData.type}</Text>
                         <View style={tw`flex flex-row items-center`}>
                             <Image source={icons.star} style={tw`h-6 w-6`} />
-                            <Text style={tw`font-semibold`} >4.5</Text>
+                            <Text style={tw`font-semibold`} >{detailsData.rating}</Text>
                         </View>
                     </View>
                     <View style={tw`flex flex-row justify-around items-center mt-4`}>
@@ -59,7 +65,7 @@ const Details = () => {
                         <View style={tw`flex flex-row items-center gap-1`}>
                             <Image source={images.avatar} style={tw`h-12 w-12`} />
                             <View>
-                                <Text style={tw`font-bold text-lg`}>Abdiladif Mohamud</Text>
+                                <Text style={tw`font-bold text-lg`}>{detailsData.agent_name}</Text>
                                 <Text style={tw`font-semd`}>Owner</Text>
                             </View>
                         </View>
@@ -146,7 +152,7 @@ const Details = () => {
                             <Text>Price</Text>
                             <Text style={tw`font-extrabold text-xl text-blue-700`}>Kes 20M</Text>
                         </View>
-                        <TouchableOpacity style={[tw`px-2 py-2 flex-1 bg-blue-700 rounded-full flex flex-row items-center justify-center `, {elevation:90, shadowColor:"black"}]}>
+                        <TouchableOpacity style={[tw`px-2 py-2 flex-1 bg-blue-700 rounded-full flex flex-row items-center justify-center `, { elevation: 90, shadowColor: "black" }]}>
                             <Text style={tw`font-extrabold text-white text-lg`}>Booking Now!</Text>
                         </TouchableOpacity>
                     </View>

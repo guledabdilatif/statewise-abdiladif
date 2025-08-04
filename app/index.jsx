@@ -2,11 +2,27 @@ import { useRouter } from 'expo-router'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import tw from 'twrnc'
 import { colors } from '../constants/colors'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 const Index = () => {
+    const[properties, setProperties]= useState([])
+    const fetchProperties = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/properties');
+            setProperties(response.data)
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error.message);
+        }
+    };
+    useEffect(()=>{
+        fetchProperties()
+    }, [])
     const router = useRouter()
     return (
         <SafeAreaView style={tw`flex-1`}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
+               
                 <Image
                     source={require('@/assets/images/onboarding.png')}
                     resizeMode='cover'
@@ -20,10 +36,10 @@ const Index = () => {
                     <Text style={tw`text-center text-lg mt-4 `}> Login to Abdiladif's-State</Text>
                     <View style={tw`mt-3 flex-row items-stretch justify-between gap-1`}>
                         {/* <Image source={icons.google} style={tw`w-5 h-5`} resizeMode="contain" /> */}
-                        <TouchableOpacity 
-                        onPress={()=>router.push('/Index')
-                        }
-                        style={[tw`px-4 py-2 rounded-full mb-2`, {backgroundColor:colors.primary1,  borderColor: colors.primary1, borderWidth: 1, width:300 }]}>
+                        <TouchableOpacity
+                            onPress={() => router.push('/Index')
+                            }
+                            style={[tw`px-4 py-2 rounded-full mb-2`, { backgroundColor: colors.primary1, borderColor: colors.primary1, borderWidth: 1, width: 300 }]}>
                             <Text style={[tw`text-lg text-white font-bold text-center`]}>Get Started</Text>
                         </TouchableOpacity >
                         {/* <TouchableOpacity style={[tw` px-4 py-2 rounded-[4px]`, {backgroundColor:colors.primary1,  borderColor: colors.primary1, borderWidth: 1 }]}>

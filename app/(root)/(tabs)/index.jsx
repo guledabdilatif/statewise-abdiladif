@@ -7,13 +7,26 @@ import tw from 'twrnc';
 import { Card, FeatureCard } from '../../../components/Cards';
 import Filters from '../../../components/Filters';
 import Search from '../../../components/Search';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+const Index = () => { 
+   const [properties, setProperties] = useState([]);
 
-const Index = () => {
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/properties');
+        setProperties(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+    fetchProperties();
+  }, []);
   return (
     <SafeAreaView style={tw`bg-white h-full`} >
-
       <FlatList
-        data={[1, 2, 3, 4]}
+        data={properties}
         renderItem={({ item }) => <Card />}
         keyExtractor={(item) => item.toString()}
         numColumns={2}
@@ -40,15 +53,13 @@ const Index = () => {
               </TouchableOpacity>
             </View>
             <FlatList
-              data={[1, 2, 3]}
-              renderItem={({ item }) => <FeatureCard />}
+               data={properties.filter((item) => item.is_featured)}
+              renderItem={({ item }) => <FeatureCard property={item}/>}
               keyExtractor={(item) => item.toString()}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={tw`gap-3 flex mt-5`}
               bounces={false}
-
-
             />
             <View>
               <View style={tw`flex flex-row items-center justify-between my-5 `}>
