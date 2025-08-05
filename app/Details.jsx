@@ -10,14 +10,24 @@ const Details = () => {
 
     const { property } = useLocalSearchParams();
     const detailsData = JSON.parse(property);
-    console.log(detailsData);
-    
+    // console.log(detailsData);
+
     const router = useRouter();
     return (
         <SafeAreaView style={tw`flex-1`}>
             <ScrollView style={tw``} showsHorizontalScrollIndicator={true}>
                 <View style={tw`relative`}>
-                    <Image source={images.reviewer_image} style={tw`w-full h-64`} />
+                    <Image
+                        source={
+                            {uri: detailsData.is_featured
+                                ? detailsData.featured_image
+                                : detailsData.is_recommended
+                                    ? detailsData.recommended_image
+                                    : detailsData.gallery[0] }
+                        }
+                        style={tw`w-full h-64`}
+                    />
+
                     <View style={tw`absolute top-0 left-0 right-0 flex flex-row items-center justify-between px-5 pt-5 mt-5 z-6`}>
                         <TouchableOpacity onPress={() => router.back()}>
                             <Image source={icons.backArrow} style={tw`w-7 h-7 z-5`} />
@@ -45,19 +55,19 @@ const Details = () => {
                             <View style={tw`p-5  h-10 w-10 rounded-full flex items-center justify-center bg-blue-100`}>
                                 <Image source={icons.bed} style={tw`h-6 w-6`} />
                             </View>
-                            <Text style={tw`font-semibold`}>8 beds</Text>
+                            <Text style={tw`font-semibold`}>{detailsData.bedrooms} beds</Text>
                         </View>
                         <View style={tw`flex flex-row gap-3 items-center`}>
                             <View style={tw`p-5  h-10 w-10 rounded-full flex items-center justify-center bg-blue-100`}>
                                 <Image source={icons.bath} style={tw`h-6 w-6`} />
                             </View>
-                            <Text style={tw`font-semibold`}>3 bath</Text>
+                            <Text style={tw`font-semibold`}>{detailsData.bathrooms} bath</Text>
                         </View>
                         <View style={tw`flex flex-row gap-3 items-center`}>
                             <View style={tw`p-5  h-10 w-10 rounded-full flex items-center justify-center bg-blue-100`}>
                                 <Image source={icons.area} style={tw`h-6 w-6`} />
                             </View>
-                            <Text style={tw`font-semibold`}>2,000 sqft</Text>
+                            <Text style={tw`font-semibold`}>{detailsData.area} sqft</Text>
                         </View>
                     </View>
                     {/* agents */}
@@ -66,7 +76,7 @@ const Details = () => {
                             <Image source={images.avatar} style={tw`h-12 w-12`} />
                             <View>
                                 <Text style={tw`font-bold text-lg`}>{detailsData.agent_name}</Text>
-                                <Text style={tw`font-semd`}>Owner</Text>
+                                <Text style={tw`font-semibold`}>{detailsData.agent_role}</Text>
                             </View>
                         </View>
                         <View style={tw`flex flex-row gap-1`}>
@@ -77,10 +87,7 @@ const Details = () => {
                     {/* Overview  */}
                     <View style={tw`mt-5`}>
                         <Text style={tw`text-xl font-bold`}>Overview</Text>
-                        <Text>Lorem ipsum dolor sit amet consectetur
-                            adipisicing elit. Mollitia quibusdam velit, deserunt adipisci ex cum.
-                            Non, eaque. Reprehenderit quisquam qui doloremque iure consectetur mollitia
-                            fugit enim quas ut ipsum! Explicabo!</Text>
+                        <Text>{detailsData.overview}</Text>
                     </View>
                     {/* Facilities  */}
                     <View style={tw`mt-5`}>
@@ -111,9 +118,9 @@ const Details = () => {
                         <Text style={tw`my-2 font-bold text-xl`}>Gallery</Text>
                         <View style={tw`flex flex-row items-center`}>
                             <Image source={icons.location} style={tw`h-8 w-8`} />
-                            <Text>Building X, South B, kedong road nairobi-kenya</Text>
+                            <Text>{detailsData.location}</Text>
                         </View>
-                        <Image source={images.map} style={tw`w-full h-60 mt-5 rounded`} />
+                        <Image source={{uri: detailsData.map}} style={tw`w-full h-60 mt-5 rounded`} />
 
 
                     </View>
@@ -129,28 +136,25 @@ const Details = () => {
                             </TouchableOpacity>
                         </View>
                         <View style={tw`mt-1.5 flex flex-row gap-2 items-center`}>
-                            <Image source={images.avatar} style={tw`h-10 w-10`} />
+                            <Image source={detailsData.reviewer_image} style={tw`h-10 w-10`} />
                             <Text style={tw`font-bold text-lg`}>Abdiladif Mohamud</Text>
                         </View>
-                        <Text style={tw`font-light mt-1 text-lg mb-2`}>Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                            Unde reiciendis quia numquam. Corporis rerum illum autem odit,
-                            error quisquam facere, modi mollitia tenetur reprehenderit iure animi?
-                            Distinctio in earum quidem.</Text>
+                        <Text style={tw`font-light mt-1 text-lg mb-2`}>{detailsData.reviewer_message}.</Text>
                         <View style={tw`mt-1.5 flex flex-row items-center justify-between`}>
                             <View style={tw`flex flex-row gap-1 items-center`}>
                                 <TouchableOpacity>
                                     <Heart color={"blue"} />
                                 </TouchableOpacity>
-                                <Text style={tw`font-extrabold font-lg`}>978</Text>
+                                <Text style={tw`font-extrabold font-lg`}>{detailsData.likes}</Text>
                             </View>
-                            <Text>7 days ago</Text>
+                            <Text>{detailsData.created_at}</Text>
                         </View>
                     </View>
                     {/* price  */}
                     <View style={tw`my-4 flex flex-row gap-3 items-center `}>
                         <View style={tw``}>
                             <Text>Price</Text>
-                            <Text style={tw`font-extrabold text-xl text-blue-700`}>Kes 20M</Text>
+                            <Text style={tw`font-extrabold text-xl text-blue-700`}>{detailsData.price}</Text>
                         </View>
                         <TouchableOpacity style={[tw`px-2 py-2 flex-1 bg-blue-700 rounded-full flex flex-row items-center justify-center `, { elevation: 90, shadowColor: "black" }]}>
                             <Text style={tw`font-extrabold text-white text-lg`}>Booking Now!</Text>

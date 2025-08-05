@@ -8,7 +8,7 @@ const Index = () => {
     const[properties, setProperties]= useState([])
     const fetchProperties = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/properties');
+            const response = await axios.get('http://172.24.48.1/api/properties');
             setProperties(response.data)
             console.log(response.data);
         } catch (error) {

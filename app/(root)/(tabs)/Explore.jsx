@@ -5,20 +5,36 @@ import { Card } from '../../../components/Cards'
 import Filters from '../../../components/Filters'
 import Search from '../../../components/Search'
 import { icons } from '../../../constants/icons'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const Explore = () => {
+  const [properties, setProperties] = useState([]);
+
+useEffect(() => {
+  const fetchProperties = async () => {
+    try {
+      const response = await axios.get('http://10.2.1.14:8000/api/properties');
+      setProperties(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+    }
+  };
+  fetchProperties();
+}, []);
+
   const router = useRouter();
   return (
 
     <SafeAreaView style={tw`flex-1 mt-4 mx-3`}>
       <FlatList
-        data={[1, 2, 3, 4]}
+        data={properties}
         renderItem={({ item }) => (
           <View style={tw`w-1/2 px-1 mt-10`}>
-            <Card />
+            <Card  property={item}/>
           </View>
         )}
-        keyExtractor={(item) => item.toString()}
+        keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         contentContainerStyle={tw`pb-32`}
         columnWrapperStyle={tw`flex gap-1 px-2`}
