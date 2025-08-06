@@ -19,11 +19,13 @@ const Details = () => {
                 <View style={tw`relative`}>
                     <Image
                         source={
-                            {uri: detailsData.is_featured
-                                ? detailsData.featured_image
-                                : detailsData.is_recommended
-                                    ? detailsData.recommended_image
-                                    : detailsData.gallery[0] }
+                            {
+                                uri: detailsData.is_featured
+                                    ? detailsData.featured_image
+                                    : detailsData.is_recommended
+                                        ? detailsData.recommended_image
+                                        : detailsData.gallery[0]
+                            }
                         }
                         style={tw`w-full h-64`}
                     />
@@ -93,12 +95,12 @@ const Details = () => {
                     <View style={tw`mt-5`}>
 
                         <View style={tw`flex flex-row items-center justify-between flex-wrap`} >
-                            {facilities.map((item, index) => (
+                            {detailsData?.facilities.map((item, index) => (
                                 <View style={tw`font-semibold flex items-center w-1/4 mb-4`} key={index}>
                                     <View style={tw`p-5  h-10 w-10 rounded-full flex items-center justify-center bg-blue-100`}>
                                         <Image source={item.icon} style={tw`h-6 w-6`} />
                                     </View>
-                                    <Text style={tw`text-center text-sm font-semibold`}>{item.title}</Text>
+                                    <Text style={tw`text-center text-sm font-semibold`}>{item}</Text>
                                 </View>
                             ))}
                         </View>
@@ -107,11 +109,16 @@ const Details = () => {
                     {/* Gallery  */}
                     <View style={tw`my-5`}>
                         <Text style={tw`my-2 font-bold text-xl`}>Gallery</Text>
-                        <View style={tw`flex flex-row justify-around `}>
-                            <Image source={images.japan} style={tw`rounded w-25 h-25 `} />
-                            <Image source={images.newYork} style={tw`rounded w-25 h-25 `} />
-                            <Image source={images.japan} style={tw`rounded w-25 h-25 `} />
+                        <View style={tw`flex flex-row flex-wrap gap-2`}>
+                            {detailsData?.gallery?.map((img, index) => (
+                                <Image
+                                    key={index}
+                                    source={{ uri: img }}
+                                    style={tw`rounded w-25 h-25`}
+                                />
+                            ))}
                         </View>
+
                     </View>
                     {/* Location  */}
                     <View style={tw`my-2`}>
@@ -120,7 +127,7 @@ const Details = () => {
                             <Image source={icons.location} style={tw`h-8 w-8`} />
                             <Text>{detailsData.location}</Text>
                         </View>
-                        <Image source={{uri: detailsData.map}} style={tw`w-full h-60 mt-5 rounded`} />
+                        <Image source={{ uri: detailsData.map }} style={tw`w-full h-60 mt-5 rounded`} />
 
 
                     </View>
@@ -136,7 +143,7 @@ const Details = () => {
                             </TouchableOpacity>
                         </View>
                         <View style={tw`mt-1.5 flex flex-row gap-2 items-center`}>
-                            <Image source={detailsData.reviewer_image} style={tw`h-10 w-10`} />
+                            <Image source={detailsData.reviewer_image} style={tw`h-10 w-10 rounded-full`} />
                             <Text style={tw`font-bold text-lg`}>Abdiladif Mohamud</Text>
                         </View>
                         <Text style={tw`font-light mt-1 text-lg mb-2`}>{detailsData.reviewer_message}.</Text>
