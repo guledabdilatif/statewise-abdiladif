@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
+import { LogOut } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import { useRouter } from 'expo-router';
 import { icons } from '../../../constants/icons';
 import { images } from '../../../constants/images';
 import { colors } from '../../../constants/colors';
+import { User } from 'lucide-react-native';
 
 const Profile = () => {
   const router = useRouter();
@@ -56,7 +58,7 @@ const Profile = () => {
         {
           old_password: oldPassword,
           new_password: newPassword,
-          new_password_confirmation: confirmPassword, 
+          new_password_confirmation: confirmPassword,
         },
         { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } }
       );
@@ -110,7 +112,9 @@ const Profile = () => {
 
       {/* Profile Info */}
       <View style={tw`items-center mb-6`}>
-        <Image source={images.avatar} style={tw`w-24 h-24 rounded-full mb-4`} />
+        <View style={tw`w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-4`}>
+          <User size={58} color="blue" /> {/* size & color adjustable */}
+        </View>
         <Text style={tw`text-2xl font-bold mb-1`}>{user.name}</Text>
         <Text style={tw`text-lg text-gray-600 mb-4`}>{user.email}</Text>
       </View>
@@ -149,7 +153,10 @@ const Profile = () => {
         onPress={handleLogout}
         style={tw`bg-red-500 px-6 py-3 rounded-full`}
       >
-        <Text style={tw`text-white text-lg font-bold text-center`}>Logout</Text>
+        <Text style={tw`text-white text-lg font-bold text-center flex flex-row items-center justify-center gap-1 `}>
+          <LogOut size={24} color="#fff" />
+          <Text>Logout</Text>
+        </Text>
       </TouchableOpacity>
 
       <Toast />
