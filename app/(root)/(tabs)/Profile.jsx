@@ -1,75 +1,158 @@
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import tw from 'twrnc';
-import { settings } from '../../../constants/data';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
+import { useRouter } from 'expo-router';
 import { icons } from '../../../constants/icons';
 import { images } from '../../../constants/images';
+import { colors } from '../../../constants/colors';
 
 const Profile = () => {
+  const router = useRouter();
+  const [user, setUser] = useState({ name: '', email: '' });
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const SettingItems = ({ icon, title, onPress, textStyle, showArrow = true }) => (
-    <TouchableOpacity onPress={onPress} style={tw`flex-row items-center mb-4`}>
-      <View style={tw`flex-row items-center gap-2 mb-1`}>
-        <Image source={icon} style={tw`w-6 h-6 mr-3`} />
-        <Text style={[tw`text-base text-lg`, textStyle]}>{title}</Text>
-      </View>
-      {showArrow && <Image source={icons.rightArrow} style={tw`w-4 h-4 ml-auto`} />}
-    </TouchableOpacity>
-  );
+  const fetchUser = async () => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      if (!token) {
+        router.replace('/Login');
+        return;
+      }
+
+      const response = await axios.get('http://10.2.1.198:8000/api/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+
+      setUser(response.data);
+    } catch (error) {
+      Toast.show({ type: 'error', text1: 'Session expired, please login again' });
+      await AsyncStorage.removeItem('authToken');
+      router.replace('/Login');
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      Toast.show({ type: 'error', text1: 'All fields are required' });
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      Toast.show({ type: 'error', text1: 'Passwords do not match' });
+      return;
+    }
+
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      await axios.post(
+        'http://10.2.1.198:8000/api/update-password',
+        {
+          old_password: oldPassword,
+          new_password: newPassword,
+          new_password_confirmation: confirmPassword, 
+        },
+        { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } }
+      );
+
+      Toast.show({ type: 'success', text1: 'Password updated successfully' });
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: error.response?.data?.message || 'Password update failed',
+      });
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      if (token) {
+        await axios.post(
+          'http://10.2.1.198:8000/api/logout',
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+            },
+          }
+        );
+      }
+    } catch (error) { }
+    await AsyncStorage.removeItem('authToken');
+    Toast.show({ type: 'success', text1: 'Logged out successfully' });
+    router.replace('/Login');
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
-    <SafeAreaView style={tw`h-full bg-white`}>
-      <ScrollView
-        style={tw`p-4`}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={tw`pb-32`}
+    <SafeAreaView style={tw`flex-1 bg-white p-5`}>
+      {/* Header */}
+      <View style={tw`flex-row items-center mb-8`}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Image source={icons.backArrow} style={tw`w-6 h-6`} />
+        </TouchableOpacity>
+        <Text style={tw`text-xl font-bold ml-4`}>Profile</Text>
+      </View>
+
+      {/* Profile Info */}
+      <View style={tw`items-center mb-6`}>
+        <Image source={images.avatar} style={tw`w-24 h-24 rounded-full mb-4`} />
+        <Text style={tw`text-2xl font-bold mb-1`}>{user.name}</Text>
+        <Text style={tw`text-lg text-gray-600 mb-4`}>{user.email}</Text>
+      </View>
+
+      {/* Update Password Section */}
+      <TextInput
+        style={tw`w-full bg-blue-200 px-4 py-3 mb-3 rounded-full text-black`}
+        placeholder="Old Password"
+        secureTextEntry
+        value={oldPassword}
+        onChangeText={setOldPassword}
+      />
+      <TextInput
+        style={tw`w-full bg-blue-200 px-4 py-3 mb-3 rounded-full text-black`}
+        placeholder="New Password"
+        secureTextEntry
+        value={newPassword}
+        onChangeText={setNewPassword}
+      />
+      <TextInput
+        style={tw`w-full bg-blue-200 px-4 py-3 mb-5 rounded-full text-black`}
+        placeholder="Confirm New Password"
+        secureTextEntry
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+      />
+      <TouchableOpacity
+        onPress={handleUpdatePassword}
+        style={[tw`px-4 py-3 rounded-full mb-8 w-full`, { backgroundColor: colors.primary1 }]}
       >
-        <View style={tw`flex-row justify-between items-center my-4`}>
-          <Text style={tw`text-xl`}>
-            Profile
-          </Text>
-          <Image source={icons.bell} style={tw`w-5 h-5 rounded-full`} />
-        </View>
+        <Text style={tw`text-lg text-white font-bold text-center`}>Update Password</Text>
+      </TouchableOpacity>
 
-        <View style={tw`flex-row justify-center flex mb-5`}>
-          <View style={tw`flex flex-col items-center relative mt-5`}>
-            <Image source={images.avatar} style={tw`size-20 rounded-full`} />
-            <TouchableOpacity style={tw`bg-white p-1 rounded-full`}>
-              <Image source={icons.edit} style={tw`w-4 h-4 absolute bottom-2 right--8`} />
-            </TouchableOpacity>
-            <Text style={tw`text-[18px] font-bold`}>abdilatif | dynamicDesign</Text>
-          </View>
-        </View>
+      {/* Logout */}
+      <TouchableOpacity
+        onPress={handleLogout}
+        style={tw`bg-red-500 px-6 py-3 rounded-full`}
+      >
+        <Text style={tw`text-white text-lg font-bold text-center`}>Logout</Text>
+      </TouchableOpacity>
 
-        <View>
-          {/* Static setting items */}
-          <SettingItems icon={icons.calendar} title="My Bookings" showArrow={true} />
-          <SettingItems icon={icons.wallet} title="Payments" showArrow={true} />
-
-          {/* Dynamic setting items */}
-          <View style={tw`flex flex-col mt-5`}>
-            {settings.slice(2).map((item, index) => (
-              <SettingItems
-                key={index}
-                icon={item.icon}
-                title={item.title}
-                onPress={item.onPress}
-                textStyle={item.textStyle}
-                showArrow={item.showArrow}
-              />
-            ))}
-          </View>
-
-          {/* Logout */}
-          <View style={tw`flex flex-col mt-5`}>
-            <SettingItems
-              icon={icons.logout}
-              title="Logout"
-              textStyle={tw`text-red-500`}
-              showArrow={false}
-            />
-          </View>
-        </View>
-      </ScrollView>
+      <Toast />
     </SafeAreaView>
   );
 };
