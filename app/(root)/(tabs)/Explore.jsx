@@ -10,28 +10,33 @@ import axios from 'axios'
 
 const Explore = () => {
   const [properties, setProperties] = useState([]);
+  const [search, setSearch] = useState('');
 
-useEffect(() => {
-  const fetchProperties = async () => {
-    try {
-      const response = await axios.get('http://10.2.1.198:8000/api/properties');
-      setProperties(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-    }
-  };
-  fetchProperties();
-}, []);
-
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get('http://10.2.1.198:8000/api/properties');
+        setProperties(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+    fetchProperties();
+  }, []);
+  const filteredProperties = properties.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase()) ||
+    item.location.toLowerCase().includes(search.toLowerCase())
+  );
+  
   const router = useRouter();
   return (
 
     <SafeAreaView style={tw`flex-1 mt-4 mx-3`}>
       <FlatList
-        data={properties}
+        data={filteredProperties}
         renderItem={({ item }) => (
           <View style={tw`w-1/2 px-1 mt-10`}>
-            <Card  property={item}/>
+            <Card property={item} />
           </View>
         )}
         keyExtractor={(item) => item.id.toString()}
@@ -43,7 +48,7 @@ useEffect(() => {
           <View>
             <View style={tw`flex flex-row justify-between px-2 mt-6 items-center`}>
               <View style={tw`h-10 w-10 flex flex-row justify-center bg-blue-100 items-center rounded-full`}>
-                <TouchableOpacity onPress={()=>{router.push('/Index')}
+                <TouchableOpacity onPress={() => { router.push('/Index') }
                 }>
                   <Image source={icons.backArrow} style={tw` h-6 w-6`} />
                 </TouchableOpacity>
@@ -52,7 +57,7 @@ useEffect(() => {
               <Image source={icons.bell} style={tw` h-6 w-6`} />
             </View>
             < View style={tw`my-2`}>
-              <Search />
+              <Search search={search} setSearch={setSearch} />
             </View >
             <View style={tw`mt-2`}>
               <Filters />

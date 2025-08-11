@@ -18,6 +18,7 @@ import axios from 'axios';
 
 const Index = () => {
   const [properties, setProperties] = useState([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -31,8 +32,14 @@ const Index = () => {
     fetchProperties();
   }, []);
 
-  const featured = properties.filter((item) => item.is_featured);
-  const recommended = properties.filter((item) => item.is_recommended);
+  // Filter properties by search term
+  const filteredProperties = properties.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase()) ||
+    item.location.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const featured = filteredProperties.filter((item) => item.is_featured);
+  const recommended = filteredProperties.filter((item) => item.is_recommended);
 
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
@@ -50,11 +57,12 @@ const Index = () => {
             <Image source={icons.bell} style={tw`w-6 h-6`} />
           </View>
 
-          <Search />
-          <View style={tw`mt-6`}>
+          <Search search={search} setSearch={setSearch} />
 
+          <View style={tw`mt-6`}>
             <Filters />
           </View>
+
           {/* Featured */}
           <View style={tw`flex flex-row items-center justify-between my-5`}>
             <Text style={tw`text-lg font-semibold`}>Featured</Text>
@@ -82,7 +90,6 @@ const Index = () => {
               <Text style={tw`text-blue-500 font-bold`}>See All</Text>
             </TouchableOpacity>
           </View>
-
         </View>
 
         <View style={tw`px-3`}>
@@ -96,7 +103,7 @@ const Index = () => {
             keyExtractor={(item) => item.id.toString()}
             numColumns={2}
             columnWrapperStyle={tw`flex gap-1`}
-            scrollEnabled={false} // Important so outer ScrollView handles scrolling
+            scrollEnabled={false}
           />
         </View>
       </ScrollView>
