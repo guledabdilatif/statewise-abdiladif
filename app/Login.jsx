@@ -5,7 +5,6 @@ import { colors } from '../constants/colors';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-// Optional: to store token for later use
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {

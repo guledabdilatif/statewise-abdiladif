@@ -19,8 +19,7 @@ const Explore = () => {
       try {
         const token = await AsyncStorage.getItem('authToken');
         if (!token) {
-          console.warn('User not logged in, redirecting to login...');
-          router.push('/Login'); // redirect if not logged in
+          router.push('/Login'); 
           return;
         }
 

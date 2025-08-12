@@ -93,7 +93,9 @@ const Profile = () => {
     } catch (error) { }
     await AsyncStorage.removeItem('authToken');
     Toast.show({ type: 'success', text1: 'Logged out successfully' });
-    router.replace('/Login');
+    setTimeout(() => {
+      router.replace('/');
+    }, 1500); 
   };
 
   useEffect(() => {

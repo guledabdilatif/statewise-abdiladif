@@ -23,12 +23,12 @@ const Index = () => {
                     <Text style={tw`text-center text-lg mt-4 `}> Login to Abdiladif's-State</Text>
                     <View style={tw`mt-3 items-stretch justify-between gap-1`}>
                         {/* <Image source={icons.google} style={tw`w-5 h-5`} resizeMode="contain" /> */}
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => router.push('/Index')
                             }
                             style={[tw`px-4 py-2 rounded-full mb-2`, { backgroundColor: colors.primary1, borderColor: colors.primary1, borderWidth: 1, width: 300 }]}>
                             <Text style={[tw`text-lg text-white font-bold text-center`]}>Get Started</Text>
-                        </TouchableOpacity >
+                        </TouchableOpacity > */}
                         <TouchableOpacity
                         onPress={() => router.push('/Login')}
                         style={[tw` px-4 py-2 rounded-full `, { backgroundColor: colors.primary1, borderColor: colors.primary1, borderWidth: 1 }]}>
