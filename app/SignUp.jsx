@@ -35,7 +35,7 @@ const SignUp = () => {
     }
 
     try {
-      await axios.post('http://10.2.1.198:8000/api/register', {
+      await axios.post('http://10.2.1.181:8000/api/register', {
         name,
         email,
         password,

@@ -15,20 +15,41 @@ import Filters from '../../../components/Filters';
 import Search from '../../../components/Search';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 
 const Index = () => {
   const [properties, setProperties] = useState([]);
   const [search, setSearch] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://10.2.1.198:8000/api/properties');
+        const token = await AsyncStorage.getItem('authToken');
+        if (!token) {
+          console.warn('No token found, redirecting to login...');
+          router.push('/Login');
+          return;
+        }
+
+        const response = await axios.get('http://10.2.1.181:8000/api/properties', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+          },
+        });
+
         setProperties(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error.message);
+        console.error('Error fetching data:', error.response?.data || error.message);
+        if (error.response?.status === 401) {
+          console.warn('Unauthorized, redirecting to login...');
+          router.push('/Login');
+        }
       }
     };
+
     fetchProperties();
   }, []);
 
@@ -48,7 +69,7 @@ const Index = () => {
         <View style={tw`px-5`}>
           <View style={tw`flex-row justify-between items-center mt-5`}>
             <View style={tw`flex-row items-center`}>
-              <Image source={images.avatar} style={tw`w-12 h-12`} />
+              <Image source={images.avatar} style={tw`w-12 h-12 rounded-full`} />
               <View style={tw`ml-3`}>
                 <Text style={tw`text-base font-semibold`}>John Doe</Text>
                 <Text style={tw`text-sm text-gray-500`}>johndoe@example.com</Text>

@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import { useRouter } from 'expo-router';
 import { icons } from '../../../constants/icons';
-import { images } from '../../../constants/images';
+// import { images } from '../../../constants/images';
 import { colors } from '../../../constants/colors';
 import { User } from 'lucide-react-native';
 
@@ -26,7 +26,7 @@ const Profile = () => {
         return;
       }
 
-      const response = await axios.get('http://10.2.1.198:8000/api/user', {
+      const response = await axios.get('http://10.2.1.181:8000/api/user', {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -54,7 +54,7 @@ const Profile = () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
       await axios.post(
-        'http://10.2.1.198:8000/api/update-password',
+        'http://10.2.1.181:8000/api/update-password',
         {
           old_password: oldPassword,
           new_password: newPassword,
@@ -80,7 +80,7 @@ const Profile = () => {
       const token = await AsyncStorage.getItem('authToken');
       if (token) {
         await axios.post(
-          'http://10.2.1.198:8000/api/logout',
+          'http://10.2.1.181:8000/api/logout',
           {},
           {
             headers: {
